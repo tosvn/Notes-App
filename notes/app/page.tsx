@@ -7,6 +7,7 @@ import {
   useTransition,
   type FormEvent,
 } from "react";
+import ReactMarkdown from "react-markdown";
 import { checkNote } from "./actions";
 
 const NOTES_STORAGE_KEY = "jotly-notes";
@@ -315,7 +316,7 @@ export default function Home() {
                   className="min-h-40 w-full resize-y rounded-xl border border-[#e7e4dc] bg-[#fcfbf9] px-4 py-3 text-sm leading-6 text-[#282922] outline-none transition placeholder:text-[#b2afa6] focus:border-[#bd5d3b] focus:bg-white focus:ring-4 focus:ring-[#bd5d3b]/10"
                   id="body"
                   name="body"
-                  placeholder="Start wherever you are..."
+                  placeholder="Use # for headings, **bold** for emphasis, and - for lists..."
                   required
                 />
               </div>
@@ -439,9 +440,51 @@ export default function Home() {
                         {note.priority}
                       </span>
                     </div>
-                    <p className="whitespace-pre-wrap pl-5 text-sm leading-7 text-[#68675e]">
-                      {note.body}
-                    </p>
+                    <div className="space-y-3 pl-5 text-sm leading-7 text-[#48483f]">
+                      <ReactMarkdown
+                        components={{
+                          h1: ({ children }) => (
+                            <h4 className="text-xl font-bold leading-snug text-[#282922]">
+                              {children}
+                            </h4>
+                          ),
+                          h2: ({ children }) => (
+                            <h4 className="text-lg font-bold leading-snug text-[#282922]">
+                              {children}
+                            </h4>
+                          ),
+                          h3: ({ children }) => (
+                            <h4 className="text-base font-bold leading-snug text-[#282922]">
+                              {children}
+                            </h4>
+                          ),
+                          p: ({ children }) => (
+                            <p className="whitespace-pre-wrap">{children}</p>
+                          ),
+                          ul: ({ children }) => (
+                            <ul className="list-disc space-y-1 pl-5">
+                              {children}
+                            </ul>
+                          ),
+                          ol: ({ children }) => (
+                            <ol className="list-decimal space-y-1 pl-5">
+                              {children}
+                            </ol>
+                          ),
+                          li: ({ children }) => <li>{children}</li>,
+                          strong: ({ children }) => (
+                            <strong className="font-bold text-[#282922]">
+                              {children}
+                            </strong>
+                          ),
+                          em: ({ children }) => (
+                            <em className="italic">{children}</em>
+                          ),
+                        }}
+                      >
+                        {note.body}
+                      </ReactMarkdown>
+                    </div>
                     {note.tags.length > 0 && (
                       <ul
                         aria-label="Tags"
