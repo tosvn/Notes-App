@@ -231,47 +231,48 @@ export default function Home() {
         aria-hidden="true"
         className="pointer-events-none absolute -right-32 -top-40 -z-10 h-[28rem] w-[28rem] rounded-full bg-[#bd7952]/60 blur-3xl"
       />
-      <div className="mx-auto w-full max-w-6xl px-5 pb-10 sm:px-8 lg:px-12 lg:pb-6">
-        <header className="flex items-center justify-between border-b border-[#817968]/45 py-4 lg:py-3">
-          <a aria-label="Notes home" className="flex items-center gap-3" href="#">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#bd5d3b] text-xl font-light text-white shadow-sm">
+      <div className="mx-auto w-full max-w-6xl px-4 pb-8 sm:px-8 sm:pb-10 lg:px-12 lg:pb-6">
+        <header className="flex items-center justify-between gap-3 border-b border-[#817968]/45 py-3 sm:py-4 lg:py-3">
+          <a aria-label="Notes home" className="flex shrink-0 items-center gap-2.5 sm:gap-3" href="#">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#bd5d3b] text-xl font-light text-white shadow-sm sm:h-9 sm:w-9">
               +
             </span>
-            <span className="text-sm font-semibold tracking-[0.16em]">
+            <span className="text-sm font-bold tracking-[0.14em] sm:tracking-[0.16em]">
               JOTLY
             </span>
           </a>
-          <span className="rounded-full border border-[#817968]/45 bg-white/75 px-3 py-1.5 text-xs font-semibold text-[#49443c]">
-            YOUR PERSONAL NOTEBOOK
+          <span className="rounded-full border border-[#817968]/45 bg-white/75 px-2.5 py-1.5 text-[0.55rem] font-bold tracking-[0.08em] text-[#49443c] sm:px-3 sm:text-xs sm:tracking-normal">
+            <span className="sm:hidden">PERSONAL NOTES</span>
+            <span className="hidden sm:inline">YOUR PERSONAL NOTEBOOK</span>
           </span>
         </header>
 
-        <section className="py-8 sm:py-12 lg:py-5">
+        <section className="py-7 sm:py-12 lg:py-5">
           <p className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#813d27] lg:mb-2">
             <span className="h-px w-6 bg-[#813d27]" />
             A little space to think
           </p>
-          <h1 className="max-w-2xl font-serif text-4xl font-semibold leading-tight tracking-tight text-[#211b17] sm:text-5xl">
+          <h1 className="max-w-2xl font-serif text-3xl font-semibold leading-tight tracking-tight text-[#211b17] sm:text-5xl">
             Make room for a thought.
           </h1>
-          <p className="mt-3 max-w-md text-base leading-7 text-[#49443c] lg:mt-2">
+          <p className="mt-3 max-w-md text-sm leading-6 text-[#49443c] sm:text-base sm:leading-7 lg:mt-2">
             Catch the ideas, reminders, and little things you don&apos;t want to
             lose.
           </p>
         </section>
 
-        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-8">
+        <div className="grid items-start gap-6 sm:gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-8">
           <section
             aria-labelledby="write-heading"
-            className="rounded-2xl border border-[#e8e4da] bg-white p-6 shadow-[0_12px_40px_-28px_rgba(55,45,30,0.3)] sm:p-8 lg:p-6"
+            className="rounded-2xl border border-[#e8e4da] bg-white p-4 shadow-[0_12px_40px_-28px_rgba(55,45,30,0.3)] sm:p-8 lg:p-6"
           >
-            <div className="mb-7 flex items-start justify-between gap-4 lg:mb-4">
+            <div className="mb-5 flex items-start justify-between gap-3 sm:mb-7 lg:mb-4">
               <div>
                 <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-[#625b50]">
                   New entry
                 </p>
                 <h2
-                  className="font-serif text-2xl tracking-tight"
+                  className="font-serif text-xl tracking-tight sm:text-2xl"
                   id="write-heading"
                 >
                   Write it down
@@ -279,7 +280,7 @@ export default function Home() {
               </div>
               <span
                 aria-hidden="true"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f8eee9] text-[#bd5d3b]"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-[#f8eee9] text-[#bd5d3b] sm:h-10 sm:w-10"
               >
                 <svg
                   fill="none"
@@ -298,7 +299,7 @@ export default function Home() {
               </span>
             </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
                 <label
                   className="block text-sm font-semibold text-[#332e28]"
@@ -342,7 +343,7 @@ export default function Home() {
                   Your note
                 </label>
                 <textarea
-                  className="min-h-40 w-full resize-y rounded-xl border border-[#e7e4dc] bg-[#fcfbf9] px-4 py-3 text-sm leading-6 text-[#282922] outline-none transition placeholder:text-[#b2afa6] focus:border-[#bd5d3b] focus:bg-white focus:ring-4 focus:ring-[#bd5d3b]/10"
+                  className="min-h-36 w-full resize-y rounded-xl border border-[#e7e4dc] bg-[#fcfbf9] px-4 py-3 text-sm leading-6 text-[#282922] outline-none transition placeholder:text-[#b2afa6] focus:border-[#bd5d3b] focus:bg-white focus:ring-4 focus:ring-[#bd5d3b]/10 sm:min-h-40"
                   id="body"
                   name="body"
                   placeholder="Use # for headings, **bold** for emphasis, and - for lists..."
@@ -394,13 +395,13 @@ export default function Home() {
             </form>
           </section>
 
-          <section aria-labelledby="notes-heading" className="pt-1">
+          <section aria-labelledby="notes-heading" className="min-w-0 pt-1">
             <div className="mb-5 flex items-end justify-between gap-4">
               <div>
                 <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-[#625b50]">
                   The collection
                 </p>
-                <h2 className="font-serif text-2xl tracking-tight" id="notes-heading">
+                <h2 className="font-serif text-xl tracking-tight sm:text-2xl" id="notes-heading">
                   Your notes
                 </h2>
               </div>
@@ -448,7 +449,7 @@ export default function Home() {
                     />
                   </svg>
                   <input
-                    className="w-full rounded-xl border border-[#817968]/40 bg-white/75 py-3 pl-10 pr-4 text-sm text-[#282922] outline-none transition placeholder:text-[#777367] focus:border-[#813d27] focus:bg-white focus:ring-4 focus:ring-[#813d27]/10"
+                    className="w-full rounded-xl border border-[#817968]/40 bg-white/75 py-3 pl-10 pr-4 text-base text-[#282922] outline-none transition placeholder:text-[#777367] focus:border-[#813d27] focus:bg-white focus:ring-4 focus:ring-[#813d27]/10 sm:text-sm"
                     onChange={(event) => setSearchQuery(event.target.value)}
                     placeholder="Search titles and notes..."
                     type="search"
@@ -462,7 +463,7 @@ export default function Home() {
                 >
                   <button
                     aria-pressed={activeTag === null}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                    className={`rounded-full border px-3 py-2 text-xs font-semibold transition sm:py-1.5 ${
                       activeTag === null
                         ? "border-[#813d27] bg-[#813d27] text-white"
                         : "border-[#817968]/40 bg-white/70 text-[#49443c] hover:bg-white"
@@ -475,7 +476,7 @@ export default function Home() {
                   {availableTags.map((tag) => (
                     <button
                       aria-pressed={activeTag === tag}
-                      className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                      className={`rounded-full border px-3 py-2 text-xs font-semibold transition sm:py-1.5 ${
                         activeTag === tag
                           ? "border-[#813d27] bg-[#f7dfd4] text-[#783b28]"
                           : "border-[#817968]/40 bg-white/70 text-[#49443c] hover:bg-white"
@@ -492,7 +493,7 @@ export default function Home() {
             )}
 
             {notes.length === 0 ? (
-              <div className="flex min-h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-[#dcd7ca] bg-white/45 px-6 py-10 text-center">
+              <div className="flex min-h-56 flex-col items-center justify-center rounded-2xl border border-dashed border-[#dcd7ca] bg-white/45 px-4 py-8 text-center sm:min-h-64 sm:px-6 sm:py-10">
                 <span
                   aria-hidden="true"
                   className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#eeeadd] text-[#8b877b]"
@@ -544,27 +545,27 @@ export default function Home() {
               <ul className="space-y-4">
                 {visibleNotes.map(({ note, index }) => (
                   <li
-                    className={`rounded-2xl border border-l-4 p-5 shadow-[0_8px_30px_-24px_rgba(55,45,30,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-24px_rgba(55,45,30,0.35)] sm:p-6 ${noteColors[index % noteColors.length].card}`}
+                    className={`min-w-0 rounded-2xl border border-l-4 p-4 shadow-[0_8px_30px_-24px_rgba(55,45,30,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-24px_rgba(55,45,30,0.35)] sm:p-6 ${noteColors[index % noteColors.length].card}`}
                     key={`${note.title}-${index}`}
                   >
-                    <div className="mb-3 flex items-start justify-between gap-4">
-                      <div className="flex items-start gap-3">
+                    <div className="mb-3 flex items-start justify-between gap-2 sm:gap-4">
+                      <div className="flex min-w-0 items-start gap-2.5 sm:gap-3">
                         <span
                           className={`mt-2 h-2.5 w-2.5 shrink-0 rounded-full ${noteColors[index % noteColors.length].accent}`}
                         />
-                        <h3 className="font-serif text-xl font-semibold leading-snug text-[#201d19]">
+                        <h3 className="min-w-0 break-words font-serif text-lg font-semibold leading-snug text-[#201d19] sm:text-xl">
                           {note.title}
                         </h3>
                       </div>
                       <div className="flex shrink-0 items-center gap-2">
                         <span
-                          className={`rounded-full px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider ${priorityStyles[note.priority]}`}
+                          className={`rounded-full px-2 py-1 text-[0.6rem] font-bold uppercase tracking-wider sm:px-3 sm:text-[0.65rem] ${priorityStyles[note.priority]}`}
                         >
                           {note.priority}
                         </span>
                         <button
                           aria-label={`Delete note: ${note.title}`}
-                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#625b50] transition hover:bg-white/70 hover:text-[#9b382c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#813d27]"
+                          className="flex h-9 w-9 items-center justify-center rounded-full text-[#625b50] transition hover:bg-white/70 hover:text-[#9b382c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#813d27]"
                           onClick={() => handleDeleteNote(index)}
                           title="Delete note"
                           type="button"
@@ -587,7 +588,7 @@ export default function Home() {
                         </button>
                       </div>
                     </div>
-                    <div className="space-y-3 pl-5 text-sm leading-7 text-[#48483f]">
+                    <div className="min-w-0 space-y-3 pl-4 text-sm leading-7 text-[#48483f] sm:pl-5">
                       <ReactMarkdown
                         components={{
                           h1: ({ children }) => (
@@ -635,7 +636,7 @@ export default function Home() {
                     {note.tags.length > 0 && (
                       <ul
                         aria-label="Tags"
-                        className="mt-5 flex flex-wrap gap-2 pl-5"
+                        className="mt-5 flex flex-wrap gap-2 pl-4 sm:pl-5"
                       >
                         {note.tags.map((tag) => (
                           <li
@@ -644,7 +645,7 @@ export default function Home() {
                             <button
                               aria-label={`Show notes tagged ${tag}`}
                               aria-pressed={activeTag === tag}
-                              className={`cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition hover:ring-2 hover:ring-[#813d27]/30 ${noteColors[index % noteColors.length].tag}`}
+                              className={`cursor-pointer rounded-full px-3 py-2 text-xs font-semibold transition hover:ring-2 hover:ring-[#813d27]/30 sm:py-1 ${noteColors[index % noteColors.length].tag}`}
                               onClick={() => setActiveTag(tag)}
                               type="button"
                             >
