@@ -203,6 +203,19 @@ export default function Home() {
     });
   }
 
+  function handleDeleteNote(noteIndex: number) {
+    const updatedNotes = notes.filter((_, index) => index !== noteIndex);
+
+    if (!saveNotes(updatedNotes)) {
+      setStorageError(
+        "This note could not be deleted because browser storage is unavailable.",
+      );
+      return;
+    }
+
+    setStorageError("");
+  }
+
   return (
     <main className="relative isolate min-h-screen flex-1 overflow-hidden bg-[radial-gradient(ellipse_at_8%_4%,rgba(190,112,77,0.62),transparent_34%),radial-gradient(ellipse_at_94%_28%,rgba(79,132,102,0.58),transparent_36%),radial-gradient(ellipse_at_58%_100%,rgba(124,99,157,0.52),transparent_42%),linear-gradient(135deg,#cbb39b_0%,#b8bca9_52%,#a6bcb0_100%)] text-[#1d1b18]">
       <div
@@ -543,11 +556,36 @@ export default function Home() {
                           {note.title}
                         </h3>
                       </div>
-                      <span
-                        className={`shrink-0 rounded-full px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider ${priorityStyles[note.priority]}`}
-                      >
-                        {note.priority}
-                      </span>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <span
+                          className={`rounded-full px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider ${priorityStyles[note.priority]}`}
+                        >
+                          {note.priority}
+                        </span>
+                        <button
+                          aria-label={`Delete note: ${note.title}`}
+                          className="flex h-8 w-8 items-center justify-center rounded-full text-[#625b50] transition hover:bg-white/70 hover:text-[#9b382c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#813d27]"
+                          onClick={() => handleDeleteNote(index)}
+                          title="Delete note"
+                          type="button"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            fill="none"
+                            height="16"
+                            viewBox="0 0 20 20"
+                            width="16"
+                          >
+                            <path
+                              d="M3.5 5.5h13M8 5.5V3.75h4V5.5m-6.5 0 .7 10.1c.06.8.72 1.4 1.52 1.4h4.56c.8 0 1.46-.6 1.52-1.4l.7-10.1M8.25 8.5v5.5m3.5-5.5v5.5"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="1.5"
+                            />
+                          </svg>
+                        </button>
+                      </div>
                     </div>
                     <div className="space-y-3 pl-5 text-sm leading-7 text-[#48483f]">
                       <ReactMarkdown
