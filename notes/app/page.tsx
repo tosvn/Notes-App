@@ -1,7 +1,16 @@
 "use client";
 
-import { useState, useTransition, type FormEvent } from "react";
+import {
+  useMemo,
+  useState,
+  useSyncExternalStore,
+  useTransition,
+  type FormEvent,
+} from "react";
 import { checkNote } from "./actions";
+
+const NOTES_STORAGE_KEY = "jotly-notes";
+const STORAGE_PREFIX = "stored:";
 
 type Note = {
   title: string;
@@ -9,6 +18,100 @@ type Note = {
   tags: string[];
   priority: "low" | "medium" | "high";
 };
+
+const noteListeners = new Set<() => void>();
+
+function subscribeToNotes(listener: () => void) {
+  noteListeners.add(listener);
+
+  function handleStorageChange(event: StorageEvent) {
+    if (event.key === NOTES_STORAGE_KEY || event.key === null) {
+      listener();
+    }
+  }
+
+  window.addEventListener("storage", handleStorageChange);
+
+  return () => {
+    noteListeners.delete(listener);
+    window.removeEventListener("storage", handleStorageChange);
+  };
+}
+
+function getNotesSnapshot() {
+  try {
+    return `${STORAGE_PREFIX}${window.localStorage.getItem(NOTES_STORAGE_KEY) ?? "[]"}`;
+  } catch {
+    return "unavailable";
+  }
+}
+
+function getServerNotesSnapshot() {
+  return `${STORAGE_PREFIX}[]`;
+}
+
+function saveNotes(notes: Note[]) {
+  try {
+    window.localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes));
+  } catch {
+    return false;
+  }
+
+  noteListeners.forEach((listener) => listener());
+  return true;
+}
+
+function isNote(value: unknown): value is Note {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  if (
+    !("title" in value) ||
+    !("body" in value) ||
+    !("tags" in value) ||
+    !("priority" in value)
+  ) {
+    return false;
+  }
+
+  return (
+    typeof value.title === "string" &&
+    typeof value.body === "string" &&
+    Array.isArray(value.tags) &&
+    value.tags.every((tag: unknown) => typeof tag === "string") &&
+    (value.priority === "low" ||
+      value.priority === "medium" ||
+      value.priority === "high")
+  );
+}
+
+function parseNotesSnapshot(snapshot: string) {
+  if (snapshot === "unavailable") {
+    return {
+      notes: [] as Note[],
+      error:
+        "Browser storage is unavailable. Notes cannot be restored from this browser.",
+    };
+  }
+
+  try {
+    const savedNotes: unknown = JSON.parse(
+      snapshot.slice(STORAGE_PREFIX.length),
+    );
+
+    if (!Array.isArray(savedNotes) || !savedNotes.every(isNote)) {
+      throw new Error("Saved notes have an invalid format.");
+    }
+
+    return { notes: savedNotes, error: "" };
+  } catch {
+    return {
+      notes: [] as Note[],
+      error: "Saved notes could not be read. Add a note to replace them.",
+    };
+  }
+}
 
 const priorityStyles = {
   low: "bg-[#e6edda] text-[#4c6330]",
@@ -40,9 +143,19 @@ const noteColors = [
 ];
 
 export default function Home() {
-  const [notes, setNotes] = useState<Note[]>([]);
+  const notesSnapshot = useSyncExternalStore(
+    subscribeToNotes,
+    getNotesSnapshot,
+    getServerNotesSnapshot,
+  );
+  const storedNotes = useMemo(
+    () => parseNotesSnapshot(notesSnapshot),
+    [notesSnapshot],
+  );
+  const notes = storedNotes.notes;
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [storageError, setStorageError] = useState("");
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,7 +172,16 @@ export default function Home() {
       }
 
       setError("");
-      setNotes((currentNotes) => [result.note, ...currentNotes]);
+      setStorageError("");
+      const updatedNotes = [result.note, ...notes];
+
+      if (!saveNotes(updatedNotes)) {
+        setStorageError(
+          "Your note could not be saved in this browser. Check your storage settings.",
+        );
+        return;
+      }
+
       form.reset();
     });
   }
@@ -256,6 +378,15 @@ export default function Home() {
                 {notes.length} {notes.length === 1 ? "note" : "notes"}
               </span>
             </div>
+
+            {(storageError || storedNotes.error) && (
+              <p
+                className="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+                role="status"
+              >
+                {storageError || storedNotes.error}
+              </p>
+            )}
 
             {notes.length === 0 ? (
               <div className="flex min-h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-[#dcd7ca] bg-white/45 px-6 py-10 text-center">
