@@ -154,9 +154,14 @@ export default function Home() {
     [notesSnapshot],
   );
   const notes = storedNotes.notes;
+  const [activeTag, setActiveTag] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
   const [storageError, setStorageError] = useState("");
+  const availableTags = [...new Set(notes.flatMap((note) => note.tags))].sort();
+  const visibleNotes = notes
+    .map((note, index) => ({ note, index }))
+    .filter(({ note }) => activeTag === null || note.tags.includes(activeTag));
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -376,7 +381,10 @@ export default function Home() {
                 </h2>
               </div>
               <span className="pb-1 text-sm font-medium text-[#514a40]">
-                {notes.length} {notes.length === 1 ? "note" : "notes"}
+                {activeTag
+                  ? `${visibleNotes.length} of ${notes.length}`
+                  : notes.length}{" "}
+                {notes.length === 1 ? "note" : "notes"}
               </span>
             </div>
 
@@ -387,6 +395,41 @@ export default function Home() {
               >
                 {storageError || storedNotes.error}
               </p>
+            )}
+
+            {notes.length > 0 && (
+              <div
+                aria-label="Filter notes by tag"
+                className="mb-5 flex flex-wrap items-center gap-2"
+              >
+                <button
+                  aria-pressed={activeTag === null}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                    activeTag === null
+                      ? "border-[#813d27] bg-[#813d27] text-white"
+                      : "border-[#817968]/40 bg-white/70 text-[#49443c] hover:bg-white"
+                  }`}
+                  onClick={() => setActiveTag(null)}
+                  type="button"
+                >
+                  All
+                </button>
+                {availableTags.map((tag) => (
+                  <button
+                    aria-pressed={activeTag === tag}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                      activeTag === tag
+                        ? "border-[#813d27] bg-[#f7dfd4] text-[#783b28]"
+                        : "border-[#817968]/40 bg-white/70 text-[#49443c] hover:bg-white"
+                    }`}
+                    key={tag}
+                    onClick={() => setActiveTag(tag)}
+                    type="button"
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
             )}
 
             {notes.length === 0 ? (
@@ -418,9 +461,22 @@ export default function Home() {
                   your mind.
                 </p>
               </div>
+            ) : visibleNotes.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-[#dcd7ca] bg-white/45 px-6 py-10 text-center">
+                <p className="font-serif text-lg font-medium text-[#373128]">
+                  No notes with this tag.
+                </p>
+                <button
+                  className="mt-3 text-sm font-semibold text-[#813d27] underline decoration-[#bd5d3b]/40 underline-offset-4 hover:text-[#5f2d1d]"
+                  onClick={() => setActiveTag(null)}
+                  type="button"
+                >
+                  Show all notes
+                </button>
+              </div>
             ) : (
               <ul className="space-y-4">
-                {notes.map((note, index) => (
+                {visibleNotes.map(({ note, index }) => (
                   <li
                     className={`rounded-2xl border border-l-4 p-5 shadow-[0_8px_30px_-24px_rgba(55,45,30,0.3)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_36px_-24px_rgba(55,45,30,0.35)] sm:p-6 ${noteColors[index % noteColors.length].card}`}
                     key={`${note.title}-${index}`}
@@ -492,10 +548,17 @@ export default function Home() {
                       >
                         {note.tags.map((tag) => (
                           <li
-                            className={`rounded-full px-3 py-1 text-xs font-semibold ${noteColors[index % noteColors.length].tag}`}
                             key={tag}
                           >
-                            {tag}
+                            <button
+                              aria-label={`Show notes tagged ${tag}`}
+                              aria-pressed={activeTag === tag}
+                              className={`cursor-pointer rounded-full px-3 py-1 text-xs font-semibold transition hover:ring-2 hover:ring-[#813d27]/30 ${noteColors[index % noteColors.length].tag}`}
+                              onClick={() => setActiveTag(tag)}
+                              type="button"
+                            >
+                              {tag}
+                            </button>
                           </li>
                         ))}
                       </ul>
