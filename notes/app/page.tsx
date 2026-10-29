@@ -241,9 +241,8 @@ export default function Home() {
               JOTLY
             </span>
           </a>
-          <span className="rounded-full border border-[#817968]/45 bg-white/75 px-2.5 py-1.5 text-[0.55rem] font-bold tracking-[0.08em] text-[#49443c] sm:px-3 sm:text-xs sm:tracking-normal">
-            <span className="sm:hidden">PERSONAL NOTES</span>
-            <span className="hidden sm:inline">YOUR PERSONAL NOTEBOOK</span>
+          <span className="rounded-full border border-[#817968]/45 bg-white/75 px-2.5 py-1.5 text-[0.5rem] font-bold tracking-[0.06em] text-[#49443c] sm:px-3 sm:text-xs sm:tracking-normal">
+            YOUR PERSONAL NOTEBOOK
           </span>
         </header>
 
